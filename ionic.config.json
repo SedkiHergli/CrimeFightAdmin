@@ -1,0 +1,7 @@
+{
+  "name": "SmartCareAdmin",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

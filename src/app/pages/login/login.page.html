@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar style="--background: rgb(82, 96, 158);">
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content style="--background: url(assets/imgs/bg.jpg) center / 100%;" padding>
+
+    <ion-card style="	box-shadow: none;background: rgba(42, 60, 143, 0.72);border-radius: 5px;">
+        <ion-card-header style="color: #fff;text-align: center;font-weight: bold">
+          Login Form
+        </ion-card-header>
+        <ion-card-content>
+            <ion-list style="background: transparent;" no-line>
+              <form [formGroup]="credentialsForm" (ngSubmit)="onSubmit()">
+            
+                <ion-item>
+                  <ion-input type="email" formControlName="email" style="color: #fff" placeholder="Email" autocomplete="on"></ion-input>
+                </ion-item>
+            
+                <ion-item>
+                  <ion-input type="password" formControlName="password" style="color: #fff" placeholder="Password"></ion-input>
+                </ion-item>
+            
+                <ion-button style="--background: rgb(236, 58, 207);--background-focused: rgb(236, 58, 207);" expand="full" shape="round" type="submit" [disabled]="!credentialsForm.valid">Login</ion-button>
+
+              </form>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+</ion-content>
+

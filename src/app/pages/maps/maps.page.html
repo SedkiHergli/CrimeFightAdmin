@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-toolbar style="--background: rgb(82, 96, 158);">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/admin/(accountus:accountus)" [text]="buttonText" [icon]="buttonIcon"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Map</ion-title>
+    </ion-toolbar>
+  </ion-header>
+   
+  <ion-content>
+    <ion-list  style="height: 10%;width: 100%;background: rgb(82, 96, 158,0.5);" expand="full">
+        <ion-grid expand="full">
+            <ion-row expand="full">
+              <ion-col >
+                {{sentData?.name_s}}
+              </ion-col>
+              <ion-col size="6">
+                {{sentData?.email_s}}
+              </ion-col>
+              <ion-col>
+                {{sentData?.phone_s}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+    </ion-list>
+    
+    <div #map id="map" style="height: 94%;width: 100%"></div>
+
+   </ion-content>

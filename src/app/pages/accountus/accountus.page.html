@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar style="--background: rgb(82, 96, 158);">
+    <ion-buttons slot="end">
+        <button ion-button color="light" (click)="initializee" style="height: 50%; width: 80%;margin-left: 10%;">Revoke Refresh Tokens</button>
+    </ion-buttons>
+    <ion-title>Limited Persons</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content style="--background: url(assets/imgs/bg.jpg) center / 100%;">
+  <ion-list style="background: #f3ebebd1;border-style: solid;border-color: #ffffff9e;" >
+    <ion-grid >
+      <ion-row *ngFor="let p of userss" (click)="goTouser(p)" (press)="onPress($event,p)">
+        <ion-col style="color: blueviolet;font-weight: bold;">
+          {{p?.fullName}}
+        </ion-col>
+        <ion-col size="6" style="color: blueviolet;font-weight: bold;">
+          {{p?.email}}
+        </ion-col>
+        <ion-col style="color: blueviolet;font-weight: bold;">
+          {{p?.phone}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+
+  </ion-content>

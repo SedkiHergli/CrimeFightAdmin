@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar style="--background: rgb(82, 96, 158);">
+    <ion-buttons slot="start">
+    </ion-buttons>
+    <ion-title>Supervisors</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+  <ion-content style="--background: url(assets/imgs/bg.jpg) center / 100%;">
+    <ion-list style="background: #f3ebebd1;border-style: solid;border-color: #ffffff9e;" >
+      <ion-grid >
+        <ion-row *ngFor="let p of userss" (press)="onPress($event,p)" >
+          <ion-col style="color: blueviolet;font-weight: bold;">
+            {{p?.fullName}}
+          </ion-col>
+          <ion-col size="6" style="color: blueviolet;font-weight: bold;">
+            {{p?.email}}
+          </ion-col>
+          <ion-col style="color: blueviolet;font-weight: bold;">
+            {{p?.phone}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-list>
+  
+    </ion-content>
