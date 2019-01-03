@@ -10,14 +10,15 @@
 <ion-content style="--background: url(assets/imgs/bg.jpg) center / 100%;">
   <ion-list style="background: #f3ebebd1;border-style: solid;border-color: #ffffff9e;" >
     <ion-grid >
-      <ion-row *ngFor="let p of userss" (click)="goTouser(p)" (press)="onPress($event,p)">
-        <ion-col style="color: blueviolet;font-weight: bold;">
+      <ion-row *ngFor="let p of userss" (click)="goTouser(p)" (press)="onPress($event,p)" style="border-style: solid;border-color: #ffffff9e;border-bottom: #7f67ef;border-top-style: hidden;
+      border-right-style: hidden;border-left-style: hidden;border-bottom-style:solid">
+        <ion-col style="color: #222428;font-weight: bold;">
           {{p?.fullName}}
         </ion-col>
-        <ion-col size="6" style="color: blueviolet;font-weight: bold;">
+        <ion-col size="6" style="color: #222428;font-weight: bold;">
           {{p?.email}}
         </ion-col>
-        <ion-col style="color: blueviolet;font-weight: bold;">
+        <ion-col style="color: #222428;font-weight: bold;">
           {{p?.phone}}
         </ion-col>
       </ion-row>
