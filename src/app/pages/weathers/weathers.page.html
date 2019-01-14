@@ -1,27 +1,37 @@
 <ion-header>
-  <ion-toolbar style="--background: rgb(82, 96, 158);">
+  <ion-toolbar style="--background: url(../assets/imgs/background16.jpg);">
     <ion-buttons slot="start">
     </ion-buttons>
-    <ion-title>Supervisors</ion-title>
+    <ion-title>All Crimes</ion-title>
   </ion-toolbar>
 </ion-header>
  
   <ion-content style="--background: url(assets/imgs/bg.jpg) center / 100%;">
-    <ion-list style="background: #f3ebebd1;border-style: solid;border-color: #ffffff9e;" >
-      <ion-grid >
-        <ion-row *ngFor="let p of userss" (press)="onPress($event,p)" style="border-style: solid;border-color: #ffffff9e;border-bottom: #7f67ef;border-top-style: hidden;
-        border-right-style: hidden;border-left-style: hidden;border-bottom-style:solid">
-          <ion-col style="color: #222428;font-weight: bold;">
-            {{p?.fullName}}
-          </ion-col>
-          <ion-col size="6" style="color: #222428;font-weight: bold;">
-            {{p?.email}}
-          </ion-col>
-          <ion-col style="color: #222428;font-weight: bold;">
-            {{p?.phone}}
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-list>
+    <div *ngIf="crimes" style="text-align: center;">
+      <ion-list style="background: #f3ebebd1;border-style: solid;border-color: #ffffff9e;" >
+        <ion-grid>
+          <ion-row *ngFor="let p of crimes" (click)="goTouser(p)" (press)="onPress($event,p)" style="border-style: solid;border-color: #ffffff9e;border-bottom: #7f67ef;border-top-style: hidden;
+          border-right-style: hidden;border-left-style: hidden;border-bottom-style:solid">
+            <ion-col style="color: #222428;font-weight: bold;">
+              {{p?.type}}
+            </ion-col>
+            <ion-col style="color: #222428;font-weight: bold;">
+              {{p?.description}}
+            </ion-col>
+            <ion-col style="color: #222428;font-weight: bold;">
+              {{p?.locationDescription}}
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list>
+      <div [hidden]="crimes || errMess">
+        <ion-spinner></ion-spinner>
+        <h4>Loading . . . Please Wait</h4>
+      </div>
+      <div *ngIf="errMess">
+        <h2>Error</h2>
+        <h4>{{errMess}}</h4>
+      </div>
+    </div>
   
     </ion-content>

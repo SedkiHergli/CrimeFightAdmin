@@ -14,16 +14,12 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { Network } from '@ionic-native/network/ngx';
-import { LocationService } from './services/location.service';
 import { UserService } from './services/user.service';
-import { SupervisorService } from './services/supervisor.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { IonicGestureConfig } from './services/ionicgestureconfig.service';
-import { EmergencyService } from './services/emergency.service';
-import { SensorService } from './services/sensor.service';
-
+import { CrimesService } from './services/crimes.service';
 
 
 
@@ -39,7 +35,10 @@ export function jwtOptionsFactory(storage) {
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
+  imports: [
+    BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule,
     HttpClientModule,
     IonicStorageModule.forRoot(),
     JwtModule.forRoot({
@@ -58,11 +57,8 @@ export function jwtOptionsFactory(storage) {
     AuthGuardService,
     AuthService,
     Network,
-    LocationService,
-    EmergencyService,
-    SensorService,
     UserService,
-    SupervisorService,
+    CrimesService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: HAMMER_GESTURE_CONFIG,

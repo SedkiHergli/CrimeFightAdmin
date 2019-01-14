@@ -2081,7 +2081,7 @@ var AccountusPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar style=\"--background: rgb(82, 96, 158);\">\n    <ion-buttons slot=\"end\">\n        <button ion-button color=\"light\" (click)=\"initializee\" style=\"height: 50%; width: 80%;margin-left: 10%;\">Revoke Refresh Tokens</button>\n    </ion-buttons>\n    <ion-title>Limited Persons</ion-title>\n  </ion-toolbar>\n</ion-header>\n \n<ion-content style=\"--background: url(assets/imgs/bg.jpg) center / 100%;\">\n  <ion-list style=\"background: #f3ebebd1;border-style: solid;border-color: #ffffff9e;\" >\n    <ion-grid >\n      <ion-row *ngFor=\"let p of userss\" (click)=\"goTouser(p)\" (press)=\"onPress($event,p)\">\n        <ion-col style=\"color: blueviolet;font-weight: bold;\">\n          {{p?.fullName}}\n        </ion-col>\n        <ion-col size=\"6\" style=\"color: blueviolet;font-weight: bold;\">\n          {{p?.email}}\n        </ion-col>\n        <ion-col style=\"color: blueviolet;font-weight: bold;\">\n          {{p?.phone}}\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </ion-list>\n\n  </ion-content>"
+module.exports = "<ion-header>\n  <ion-toolbar style=\"--background: rgb(82, 96, 158);\">\n    <ion-buttons slot=\"end\">\n        <button ion-button color=\"light\" (click)=\"initializee\" style=\"height: 50%; width: 80%;margin-left: 10%;\">Revoke Refresh Tokens</button>\n    </ion-buttons>\n    <ion-title>Limited Persons</ion-title>\n  </ion-toolbar>\n</ion-header>\n \n<ion-content style=\"--background: url(assets/imgs/bg.jpg) center / 100%;\">\n  <ion-list style=\"background: #f3ebebd1;border-style: solid;border-color: #ffffff9e;\" >\n    <ion-grid >\n      <ion-row *ngFor=\"let p of userss\" (click)=\"goTouser(p)\" (press)=\"onPress($event,p)\" style=\"border-style: solid;border-color: #ffffff9e;border-bottom: #7f67ef;border-top-style: hidden;\n      border-right-style: hidden;border-left-style: hidden;border-bottom-style:solid\">\n        <ion-col style=\"color: #222428;font-weight: bold;\">\n          {{p?.fullName}}\n        </ion-col>\n        <ion-col size=\"6\" style=\"color: #222428;font-weight: bold;\">\n          {{p?.email}}\n        </ion-col>\n        <ion-col style=\"color: #222428;font-weight: bold;\">\n          {{p?.phone}}\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </ion-list>\n\n  </ion-content>"
 
 /***/ }),
 
@@ -2808,7 +2808,7 @@ var WeathersPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\r\n  <ion-toolbar style=\"--background: rgb(82, 96, 158);\">\r\n    <ion-buttons slot=\"start\">\r\n    </ion-buttons>\r\n    <ion-title>Supervisors</ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n \r\n  <ion-content style=\"--background: url(assets/imgs/bg.jpg) center / 100%;\">\r\n    <ion-list style=\"background: #f3ebebd1;border-style: solid;border-color: #ffffff9e;\" >\r\n      <ion-grid >\r\n        <ion-row *ngFor=\"let p of userss\" (press)=\"onPress($event,p)\" >\r\n          <ion-col style=\"color: blueviolet;font-weight: bold;\">\r\n            {{p?.fullName}}\r\n          </ion-col>\r\n          <ion-col size=\"6\" style=\"color: blueviolet;font-weight: bold;\">\r\n            {{p?.email}}\r\n          </ion-col>\r\n          <ion-col style=\"color: blueviolet;font-weight: bold;\">\r\n            {{p?.phone}}\r\n          </ion-col>\r\n        </ion-row>\r\n      </ion-grid>\r\n    </ion-list>\r\n  \r\n    </ion-content>"
+module.exports = "<ion-header>\r\n  <ion-toolbar style=\"--background: rgb(82, 96, 158);\">\r\n    <ion-buttons slot=\"start\">\r\n    </ion-buttons>\r\n    <ion-title>Supervisors</ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n \r\n  <ion-content style=\"--background: url(assets/imgs/bg.jpg) center / 100%;\">\r\n    <ion-list style=\"background: #f3ebebd1;border-style: solid;border-color: #ffffff9e;\" >\r\n      <ion-grid >\r\n        <ion-row *ngFor=\"let p of userss\" (press)=\"onPress($event,p)\" style=\"border-style: solid;border-color: #ffffff9e;border-bottom: #7f67ef;border-top-style: hidden;\r\n        border-right-style: hidden;border-left-style: hidden;border-bottom-style:solid\">\r\n          <ion-col style=\"color: #222428;font-weight: bold;\">\r\n            {{p?.fullName}}\r\n          </ion-col>\r\n          <ion-col size=\"6\" style=\"color: #222428;font-weight: bold;\">\r\n            {{p?.email}}\r\n          </ion-col>\r\n          <ion-col style=\"color: #222428;font-weight: bold;\">\r\n            {{p?.phone}}\r\n          </ion-col>\r\n        </ion-row>\r\n      </ion-grid>\r\n    </ion-list>\r\n  \r\n    </ion-content>"
 
 /***/ }),
 
@@ -3915,7 +3915,7 @@ __webpack_require__.r(__webpack_exports__);
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
     production: false,
-    url: 'https://172.16.10.185:8443',
+    url: 'https://192.168.43.245:8443',
     weather_url: 'http://api.openweathermap.org/data/2.5/weather',
     api_weather: '675ff96d89dd9bf914a9e0400bc06886'
 };

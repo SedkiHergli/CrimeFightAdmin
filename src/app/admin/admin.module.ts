@@ -7,6 +7,9 @@ import { AccountusPageModule } from '../pages/accountus/accountus.module';
 import { IonicModule } from '@ionic/angular';
 import { MapsPageModule } from '../pages/maps/maps.module';
 import { WeathersPageModule } from '../pages/weathers/weathers.module';
+import { AddCrimePageModule } from '../pages/add-crime/add-crime.module';
+import { AddCrimesPageModule } from '../pages/add-crimes/add-crimes.module';
+import { CrimeDetailPageModule } from '../pages/crime-detail/crime-detail.module';
 
 @NgModule({
   imports: [
@@ -15,7 +18,10 @@ import { WeathersPageModule } from '../pages/weathers/weathers.module';
     AdminRoutingModule,
     AccountusPageModule,
     MapsPageModule,
-    WeathersPageModule
+    WeathersPageModule,
+    AddCrimePageModule,
+    AddCrimesPageModule,
+    CrimeDetailPageModule,
   ],  
   declarations: [AdminComponent]
 })

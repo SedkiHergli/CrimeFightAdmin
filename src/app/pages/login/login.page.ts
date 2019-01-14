@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { AlertController, NavController, LoadingController, ToastController} from '@ionic/angular';
-import { LocationService } from '../../services/location.service';
 import { Storage } from '@ionic/storage';
 import { Network } from '@ionic-native/network/ngx';
 
@@ -25,7 +24,6 @@ export class LoginPage implements OnInit {
     private authService: AuthService, 
     private navContrl: NavController, 
     public loadingController: LoadingController, 
-    public locationService: LocationService,
     private network: Network,
     private toastCtrl: ToastController
   ) { }

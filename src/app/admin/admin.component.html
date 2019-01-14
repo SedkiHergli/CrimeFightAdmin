@@ -7,7 +7,7 @@
 
     <ion-tab-button tab="supervisors"  href="/admin/(supervisors:supervisors)" (click)="tab2Selected()">
       <ion-icon name="people"></ion-icon>
-      <ion-label>Supervisors</ion-label>
+      <ion-label>Crimes</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="logout" (click)="logout()">
@@ -24,9 +24,4 @@
   <ion-tab tab="supervisors">
     <ion-router-outlet name="supervisors"></ion-router-outlet>
   </ion-tab>
-
-  <ion-tab tab="maps">
-    <ion-router-outlet name="maps"></ion-router-outlet>
-  </ion-tab>
-  
 </ion-tabs>

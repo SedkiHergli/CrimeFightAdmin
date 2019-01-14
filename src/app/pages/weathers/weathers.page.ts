@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe, formatDate } from '@angular/common'
-import { SupervisorService } from '../../services/supervisor.service';
 import { interval, Subscription} from 'rxjs';
 import { Storage } from '@ionic/storage';
-import { AlertController } from '@ionic/angular';
+import { ModalController, ToastController, NavParams, AlertController } from '@ionic/angular';
 import { UserService } from '../../services/user.service';
+import { AddCrimePage } from '../add-crime/add-crime.page';
+import { CrimesService } from '../../services/crimes.service';
+import { CrimeDetailPage } from '../crime-detail/crime-detail.page';
 
 
 
@@ -15,15 +17,16 @@ import { UserService } from '../../services/user.service';
 })
 export class WeathersPage implements OnInit {
   token:any;
-  userss=[];
+  crimes=[];
   datan:any={};
   subscriptionnn: Subscription;
 
   constructor(
-    private supervisorService:SupervisorService,
     private userService: UserService,
+    private crimeService: CrimesService,
     private storage:Storage,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -46,35 +49,47 @@ export class WeathersPage implements OnInit {
   }
 
   getAllSupervisor(){
-    this.supervisorService.getAllSupervisor(this.token).subscribe(resp=>{
-      this.userss=[];
-      for(let i of resp){
-        if(i.stype != "Admin")
-        this.userss.push(i);
-      }
-    });
+      this.userService.getAllUser(this.token).subscribe(resp=>{
+        this.crimes=[];
+        for(let i of resp){
+          if(i.stype != "Admin"){
+            for(let j of i["crimeReports"]){
+              this.crimes.push(j);
+            }
+          }
+        }
+      });
   }
 
   onPress($event,p) {
     this.ChangeU(p);
+  }
+
+  async openAddCrime(p) {
+    const modal = await this.modalController.create({
+      component: AddCrimePage,
+      componentProps: { value: p },
+      animated:true
+    });
+    return await modal.present();
   }
   
 
 
   async ChangeU(p) {
     const alert = await this.alertController.create({
-      header: 'Modify Supervisor',
+      header: 'Modify Crime',
       buttons: [
         {
-          text: 'Modify User',
+          text: 'Modify crime',
           handler: (data) => {
-            this.ChangeAccountS(p);
+            this.openAddCrime(p);
           }
         },
         {
-          text: 'Modify Password',
+          text: 'Delete crime',
           handler: (data) => {
-            this.ChangePasswordS(p);
+            this.deleteCrime(p);
           }
         },
         {
@@ -144,7 +159,6 @@ export class WeathersPage implements OnInit {
           datta["email_s"]=this.datan.email;
           datta["phone_s"]=this.datan.phone;
           this.userService.updateUser(datta,user.email_u,this.token).subscribe((res)=>{
-                  this.supervisorService.updateSupervisor(this.datan,user.email,this.token).subscribe(resp=>this.getAllSupervisor());
                 });  
           }
         }
@@ -154,44 +168,21 @@ export class WeathersPage implements OnInit {
     await alert.present();
   }
 
-  async ChangePasswordS(user) {
-    const alert = await this.alertController.create({
-      header: 'Modify Password',
-      inputs: [
-        {
-          name: 'password',
-          type: 'password',
-          placeholder: 'Password'
-        },
-        {
-          name: 'cpassword',
-          type: 'password',
-          placeholder: 'Confirm password'
-        }
-      ],
-      buttons: [
-        {
-          text: 'CANCEL',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-          }
-        }, {
-          text: 'SAVE',
-          handler: (data) => {
-              if(!data["password"] || data["cpassword"]!=data["password"] || data["password"].length < 6  ){
-                this.showAlert("Enter password again !!");
-            }
-            else{  
-              this.supervisorService.updateSupervisor(data,user.email,this.token).subscribe(resp=>this.getAllSupervisor());   
-            }
-            
-          }
-        }
-      ]
-    });
 
-    await alert.present();
-  }
+  deleteCrime(user){
+    this.crimeService.deleteCrime(user.author,user._id,this.token).subscribe((res)=>{
+            this.getAllSupervisor();
+          });
+
+}
+
+async goTouser(p){
+  const modal = await this.modalController.create({
+    component: CrimeDetailPage,
+    componentProps: {crime: p},
+    animated:true
+  });
+  return await modal.present();
+}
   
 }

@@ -26,13 +26,6 @@ const routes: Routes = [
 
       },
       {
-        path: 'maps',
-        outlet: 'maps',
-        component: MapsPage,
-        canActivate: [AuthGuardService],
-
-      },
-      {
         path: 'supervisors',
         outlet: 'supervisors',
         component: WeathersPage,

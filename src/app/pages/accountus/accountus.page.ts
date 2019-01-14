@@ -2,14 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './../../services/auth.service';
 import { Storage } from '@ionic/storage';
 import { interval, Subscription } from 'rxjs';
-import { LocationService } from '../../services/location.service';
 import { DatePipe, formatDate } from '@angular/common'
-import { NavController, AlertController, ToastController } from '@ionic/angular';
+import { NavController, AlertController, ToastController, ModalController } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
 import { UserService } from '../../services/user.service';
-import { SupervisorService } from '../../services/supervisor.service';
-import { EmergencyService } from '../../services/emergency.service';
-import { SensorService } from '../../services/sensor.service';
+import { MapsPage } from '../maps/maps.page';
 
 
 declare var google;
@@ -36,24 +33,25 @@ export class AccountusPage implements OnInit {
   constructor(
     private alertController: AlertController,
     private navContrl: NavController,
-    private locationService: LocationService, 
     private authService: AuthService, 
     private storage:Storage,
     private network: Network,
     private toastCtrl: ToastController,
     private userService: UserService,
-    private supervisorService: SupervisorService,
-    private emergencyService: EmergencyService,
-    private sensorService: SensorService
+    private modalCtrl: ModalController,
   ) { }
 
   ngOnInit() {
+    this.storage.get(REFRESH_TOKEN_KEY).then(tokeni => {
+      this.storage.get(TOKEN_KEY).then(tokenn => {
+    this.authService.updateToken("auth",tokeni,tokenn).subscribe(resp=>{this.storage.set(TOKEN_KEY,resp["access_token"]);});
+      });});
     this.verifyConnection();
     const sourcee = interval(3599000);
     this.subscriptionn = sourcee.subscribe(val => {
       this.storage.get(REFRESH_TOKEN_KEY).then(tokeni => {
         this.storage.get(TOKEN_KEY).then(tokenn => {
-        this.authService.updateToken("auths",tokeni,tokenn).subscribe(resp=>{
+        this.authService.updateToken("auth",tokeni,tokenn).subscribe(resp=>{
           this.storage.set(TOKEN_KEY,resp["access_token"]);
         });
       });});      
@@ -113,10 +111,15 @@ getAllUser(){
   });
 }
 
-goTouser(p){
-  this.storage.set('data',p);
-  this.navContrl.navigateRoot('/admin/(maps:maps)');
+async goTouser(p){
+  const modal = await this.modalCtrl.create({
+    component: MapsPage,
+    componentProps: {data: p},
+    animated:true
+  });
+  return await modal.present();
 }
+
 
 onPress($event,p) {
   this.ChangeU(p);
@@ -167,16 +170,8 @@ async ChangeAccountU(user) {
         datta["email_u"]=this.datan.email;
         datta["phone_u"]=this.datan.phone;
         this.userService.updateUser(this.datan,user.email,this.token).subscribe((res)=>{
-          this.locationService.updateLocation(this.datan,user.email,this.token).subscribe((res)=>{
-            this.emergencyService.updateEmergency(this.datan,user.email,this.token).subscribe((res)=>{
-              this.sensorService.updateSensor(this.datan,user.email,this.token).subscribe((res)=>{
-                this.supervisorService.updateSupervisor(datta,user.email_s,this.token).subscribe((res)=>{
-                  this.getAllUser();
-                });
-              });
-            });   
-          });   
-        });   
+                this.getAllUser();
+                });  
         }
       }
     ]
@@ -225,70 +220,6 @@ async ChangePasswordU(user) {
   await alert.present();
 }
 
-async ChangeSupervisorU(user) {
-  const alert = await this.alertController.create({
-    header: 'Add Supervisor',
-    inputs: [
-      {
-        name: 'fullName',
-        type: 'text',
-        placeholder: 'fullName'
-      },
-      {
-        name: 'email',
-        type: 'email',
-        placeholder: 'Email'
-      },
-      {
-        name: 'phone',
-        type: 'tel',
-        placeholder: 'Phone'
-      },
-      {
-        name: 'password',
-        type: 'password',
-        placeholder: 'Password'
-      }
-    ],
-    buttons: [
-      {
-        text: 'CANCEL',
-        role: 'cancel',
-        cssClass: 'secondary',
-        handler: () => {
-        }
-      }, {
-        text: 'SAVE',
-        handler: (data) => {
-          if(!data["fullName"] || !data["email"] || !data["phone"] || !data["password"])
-          {
-            this.showAlert("You should complete input Supervisor fields!");
-          }
-            else{
-              var datta ={};
-              datta["name_s"]=data["fullName"];
-              datta["email_s"]=data["email"];
-              datta["phone_s"]=data["phone"];
-              data["stype"]="Supervisor";
-              data["name_u"]=user.fullName;
-              data["email_u"]=user.email;
-              data["phone_u"]=user.phone;
-              this.supervisorService.deleteSupervisor(user.email_s,this.token).subscribe((res)=>{
-                this.authService.registerS(data).subscribe((res)=>{
-                  this.userService.updateUser(datta,user.email,this.token).subscribe((res)=>{
-                    this.getAllUser();
-                  });
-                });
-              });
-            }
-        }
-      }
-    ]
-  });
-
-  await alert.present();
-}
-
 async ChangeU(p) {
   const alert = await this.alertController.create({
     header: 'Modify User',
@@ -303,12 +234,6 @@ async ChangeU(p) {
         text: 'Modify Password',
         handler: (data) => {
           this.ChangePasswordU(p);
-        }
-      },
-      {
-        text: 'Change Supervisor',
-        handler: (data) => {
-          this.ChangeSupervisorU(p);
         }
       },
       {
@@ -340,18 +265,10 @@ showAlert(msg) {
 }
 
 deleteUser(user){
-  this.supervisorService.deleteSupervisor(user.email_s,this.token).subscribe((res)=>{
     this.userService.deleteUser(user.email,this.token).subscribe((res)=>{
-      this.sensorService.deleteSensor(user.email,this.token).subscribe((res)=>{
-        this.emergencyService.deleteEmergency(user.email,this.token).subscribe((res)=>{
-          this.locationService.deleteLocation(user.email,this.token).subscribe((res)=>{
             this.getAllUser();
           });
-        });
-      });
 
-    });
-  });
 }
 
 initializee(){
