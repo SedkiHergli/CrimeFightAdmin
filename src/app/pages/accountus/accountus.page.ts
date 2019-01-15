@@ -3,13 +3,16 @@ import { AuthService } from './../../services/auth.service';
 import { Storage } from '@ionic/storage';
 import { interval, Subscription } from 'rxjs';
 import { DatePipe, formatDate } from '@angular/common'
-import { NavController, AlertController, ToastController, ModalController } from '@ionic/angular';
+import { NavController, AlertController, ToastController, ModalController, Platform } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
 import { UserService } from '../../services/user.service';
 import { MapsPage } from '../maps/maps.page';
+import { CrimesService } from '../../services/crimes.service';
+import {FileTransfer, FileTransferObject} from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 
-declare var google;
+declare var cordova: any;
 const TOKEN_KEY = 'access_token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
 
@@ -18,18 +21,17 @@ const REFRESH_TOKEN_KEY = 'refresh_token';
   selector: 'app-accountus',
   templateUrl: './accountus.page.html',
   styleUrls: ['./accountus.page.scss'],
+  providers: [FileTransfer,FileTransferObject, File]
 })
 export class AccountusPage implements OnInit {
   userss=[];
   datan:any={};
-  status:any="OK !";
-  sugset:any;
-  statusIcon:any="assets/imgs/oki.png";
   user:any;
   token:any;
   subscription: Subscription;
   subscriptionn: Subscription;
   disconnectSubscription:any;
+  storageDirectory: string = '';
   constructor(
     private alertController: AlertController,
     private navContrl: NavController,
@@ -39,7 +41,29 @@ export class AccountusPage implements OnInit {
     private toastCtrl: ToastController,
     private userService: UserService,
     private modalCtrl: ModalController,
-  ) { }
+    private crimeService: CrimesService,
+    private transfer: FileTransfer,    
+    private file: File,
+    public platform: Platform,
+  ) { 
+    this.platform.ready().then(() => {
+      // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
+      if(!this.platform.is('cordova')) {
+        return false;
+      }
+
+      if (this.platform.is('ios')) {
+        this.storageDirectory = cordova.file.documentsDirectory;
+      }
+      else if(this.platform.is('android')) {
+        this.storageDirectory = cordova.file.dataDirectory;
+      }
+      else {
+        // exit otherwise, but you could add further types here e.g. Windows
+        return false;
+      }
+    });
+  }
 
   ngOnInit() {
     this.storage.get(REFRESH_TOKEN_KEY).then(tokeni => {
@@ -111,6 +135,17 @@ getAllUser(){
   });
 }
 
+downloadCrime(){
+  this.crimeService.downloadCrime(this.token).subscribe(resp=>{
+    const fileTransfer: FileTransferObject = this.transfer.create();
+    fileTransfer.download(`${this.authService.url}${resp}`, this.file.dataDirectory + resp.split('/')[resp.split('/').length-1]).then((entry) => {
+      console.log('download complete: ' + entry.toURL());
+    }, (error) => {
+      // handle error
+    });
+  });
+}
+
 async goTouser(p){
   const modal = await this.modalCtrl.create({
     component: MapsPage,
@@ -119,6 +154,7 @@ async goTouser(p){
   });
   return await modal.present();
 }
+
 
 
 onPress($event,p) {
@@ -274,5 +310,67 @@ deleteUser(user){
 initializee(){
   this.authService.revokeIssuedRefreshTokens(this.token).subscribe();
 }
+
+/*
+
+downloadImage(image,lien) {
+  const fileTransfer: FileTransferObject = this.transfer.create();
+  this.platform.ready().then(() => {
+
+    const imageLocation = `${lien}`;
+
+    fileTransfer.download(imageLocation, this.storageDirectory + image).then((entry) => {
+
+      const alertSuccess = this.alertController.create({
+        header: 'Download Succeeded!',
+        message: `${image} was successfully downloaded to: ${entry.toURL()}`,
+        buttons: ['Ok']
+      });
+
+      alertSuccess.then(alert => alert.present());
+
+    }, (error) => {
+
+      const alertFailure = this.alertController.create({
+        header: `Download Failed!`,
+        message: `${image} was not successfully downloaded. Error code: ${error.code}`,
+        buttons: ['Ok']
+      });
+
+      alertFailure.then(alert => alert.present());
+
+    });
+
+  });
+
+}
+
+retrieveImage(image) {
+
+  this.file.checkFile(this.storageDirectory, image)
+    .then(() => {
+
+      const alertSuccess = this.alertController.create({
+        header: `File retrieval Succeeded!`,
+        message: `${image} was successfully retrieved from: ${this.storageDirectory}`,
+        buttons: ['Ok']
+      });
+
+      alertSuccess.then(alert => alert.present());
+    })
+    .catch((err) => {
+
+      const alertFailure = this.alertController.create({
+        header: `File retrieval Failed!`,
+        message: `${image} was not successfully retrieved. Error Code: ${err.code}`,
+        buttons: ['Ok']
+      });
+
+      alertFailure.then(alert => alert.present());
+
+
+    });
+}
+*/
 
 }

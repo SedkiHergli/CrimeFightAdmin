@@ -37,6 +37,20 @@ export class CrimesService {
       })
     );
    }
+
+   downloadCrime(token):Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + token
+      })
+    };
+    return this.http.get(`${this.authService.url}/crimescsv`,httpOptions).pipe(
+      catchError(e => {
+        throw new Error(e);
+      })
+    );
+   }
   
   updateCrime(data,email,token){
     const httpOptions = {
